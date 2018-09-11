@@ -8,6 +8,7 @@ import org.apache.poi.ss.util.CellRangeAddress;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 
 @Slf4j
 public class WriteExcel {
@@ -67,5 +68,13 @@ public class WriteExcel {
             log.error(e.getMessage(),e);
             return  false;
         }
+    }
+
+    public static void main(String[] args) throws UnsupportedEncodingException {
+        FileService.delFile("./out.csv");
+        FileService.WriteStringToFile("./out.csv",new String("name,age,address\n".getBytes("GBK"),"utf-8"));
+        FileService.WriteStringToFile("./out.csv",new String("nick,12,nanshan\n".getBytes("GBK"),"utf-8"));
+        FileService.WriteStringToFile("./out.csv",new String("中文测试,12,南山\n".getBytes("GBK"),"utf-8"));
+
     }
 }
