@@ -6,30 +6,50 @@ import java.io.FileOutputStream;
 import java.io.PrintStream;
 
 public class FileService {
-    public static void WriteStringToFile(String filePath,String text) {
+
+    /**
+     * 打开文件
+     * @param filePath
+     * @return
+     */
+    public static   File  open(String filePath){
+        File file=null;
         try {
-            if(filePath == null) {
-                return;
-            }
-            File file = new File(filePath);
-            PrintStream ps = new PrintStream(new FileOutputStream(file,true));
-            //ps.println("http://www.jb51.net");// 往文件里写入字符串
-            ps.append(text);// 在已有的基础上添加字符串
+             file = new File(filePath);
+            delFile(file);
+            PrintStream ps;
+            ps = new PrintStream(new FileOutputStream(file,true));
+            ps.append(new String(new byte[] { (byte) 0xEF, (byte) 0xBB,(byte) 0xBF }));
             ps.close();
+            return  file;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            return  null;
         }finally {
-
         }
     }
 
-
-
-    public static void delFile(String filePath){
-        if(filePath == null) {
-            return;
+    /**
+     * 创建一个写入流
+     * @param file
+     * @return
+     */
+    public static PrintStream getPrintStream(File file){
+        try {
+            PrintStream ps;
+            ps = new PrintStream(new FileOutputStream(file,true));
+            return ps;
+        }catch (Exception e){
+            e.printStackTrace();
+            return  null;
         }
-        File file=new File(filePath);
+    }
+
+    /**
+     * 删除文件
+     * @param file
+     */
+    public static void delFile(File file){
         if(file.exists()&&file.isFile())
             file.delete();
     }
